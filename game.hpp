@@ -2,9 +2,12 @@
 #define GAME_HPP
 
 #include <stack>
+#include <map>
+#include <string>
 #include <SFML/Graphics.hpp>
 
 #include "texture_manager.hpp"
+#include "tile.hpp"
 
 class GameState;
 
@@ -13,16 +16,21 @@ class Game
 	private:
 
 	void loadTextures();
-	
-    public:
+	void loadTiles();
 
-    std::stack<GameState*> states;
+	public:
 
-    sf::RenderWindow window;
+	const static int tileSize = 8;
+
+	std::stack<GameState*> states;
+
+	sf::RenderWindow window;
 	TextureManager texmgr;
 	sf::Sprite background;
-	
-    void pushState(GameState* state);
+
+	std::map<std::string, Tile> tileAtlas;
+
+	void pushState(GameState* state);
     void popState();
     void changeState(GameState* state);
     GameState* peekState();
