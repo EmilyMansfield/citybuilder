@@ -61,3 +61,12 @@ void GameStateStart::loadgame()
 
     return;
 }
+
+GameStateStart::GameStateStart(Game* game)
+{
+	this->game = game;
+	sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
+	this->view.setSize(pos);
+	pos *= 0.5f;
+	this->view.setCenter(pos);
+}
