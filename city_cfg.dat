@@ -1,0 +1,14 @@
+width=64
+height=64
+day=0
+populationPool=50
+employmentPool=25
+population=50
+employable=25
+birthRate=0.00055
+deathRate=0.00023
+residentialTax=0.05
+commercialTax=0.05
+industrialTax=0.05
+funds=30000
+earnings=0
