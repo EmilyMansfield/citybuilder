@@ -2,8 +2,11 @@
 #define GAME_STATE_START_HPP
 
 #include <SFML/Graphics.hpp>
+#include <map>
+#include <string>
 
 #include "game_state.hpp"
+#include "gui.hpp"
 
 class GameStateStart : public GameState
 {
@@ -11,8 +14,10 @@ class GameStateStart : public GameState
 
     sf::View view;
 
-	void loadgame();
-	
+    std::map<std::string, Gui> guiSystem;
+
+    void loadgame();
+    
     public:
 
     virtual void draw(const float dt);
