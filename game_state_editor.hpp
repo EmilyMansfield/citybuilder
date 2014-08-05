@@ -5,8 +5,9 @@
 
 #include "game_state.hpp"
 #include "map.hpp"
+#include "tile.hpp"
 
-enum class ActionState { NONE, PANNING };
+enum class ActionState { NONE, PANNING, SELECTING };
 
 class GameStateEditor : public GameState
 {
@@ -17,10 +18,15 @@ class GameStateEditor : public GameState
     sf::View gameView;
     sf::View guiView;
 
-	Map map;
+    Map map;
 
-	sf::Vector2i panningAnchor;
+    sf::Vector2i panningAnchor;
     float zoomLevel;
+
+    sf::Vector2i selectionStart;
+    sf::Vector2i selectionEnd;
+
+    Tile* currentTile;
     
     public:
 
