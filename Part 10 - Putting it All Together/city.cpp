@@ -276,7 +276,7 @@ void City::update(float dt)
         }
     }
 	/* Adjust population pool for births and deaths */
-    this->populationPool = this->adjustPopulation(this->populationPool, this->birthRate - this->deathRate);
+    this->populationPool += this->populationPool * (this->birthRate - this->deathRate);
     popTotal += this->populationPool;
 
     /* Adjust the employment pool for the changing population */
