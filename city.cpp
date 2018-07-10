@@ -91,6 +91,80 @@ void City::tileChanged()
     return;
 }
 
+void City::load(std::string cityName, std::map<std::string, Tile>& tileAtlas)
+{
+	int width = 0;
+	int height = 0;
+	
+	std::ifstream inputFile(cityName + "_cfg.dat", std::ios::in);
+	
+	std::string line;
+	
+	while(std::getline(inputFile, line))
+	{
+	    std::istringstream lineStream(line);
+	    std::string key;
+	    if(std::getline(lineStream, key, '='))
+	    {
+	            std::string value;
+	            if(std::getline(lineStream, value))
+	            {
+		            if(key == "width")                  width                   = std::stoi(value);
+		            else if(key == "height")            height                  = std::stoi(value);
+		            else if(key == "day")               this->day               = std::stoi(value);
+		            else if(key == "populationPool")    this->populationPool    = std::stod(value);
+		            else if(key == "employmentPool")    this->employmentPool    = std::stod(value);
+		            else if(key == "population")        this->population        = std::stod(value);
+		            else if(key == "employable")        this->employable        = std::stod(value);
+		            else if(key == "birthRate")         this->birthRate         = std::stod(value);
+		            else if(key == "deathRate")         this->deathRate         = std::stod(value);
+		            else if(key == "residentialTax")    this->residentialTax    = std::stod(value);
+		            else if(key == "commercialTax")     this->commercialTax     = std::stod(value);
+		            else if(key == "industrialTax")     this->industrialTax     = std::stod(value);
+		            else if(key == "funds")             this->funds             = std::stod(value);
+		            else if(key == "earnings")          this->earnings          = std::stod(value);
+	            }
+	            else
+	            {
+		            std::cerr << "Error, no value for key " << key << std::endl;
+	            }
+	    }
+	}
+	
+	inputFile.close();
+	
+	this->map.load(cityName + "_map.dat", width, height, tileAtlas);
+	tileChanged();
+	
+	return;
+}
+
+void City::save(std::string cityName)
+{
+    std::ofstream outputFile(cityName + "_cfg.dat", std::ios::out);
+    
+    outputFile << "width="              << this->map.width          << std::endl;
+    outputFile << "height="             << this->map.height         << std::endl;
+    outputFile << "day="                << this->day                << std::endl;
+    outputFile << "populationPool="     << this->populationPool     << std::endl;
+    outputFile << "employmentPool="     << this->employmentPool     << std::endl;
+    outputFile << "population="         << this->population         << std::endl;
+    outputFile << "employable="         << this->employable         << std::endl;
+    outputFile << "birthRate="          << this->birthRate          << std::endl;
+    outputFile << "deathRate="          << this->deathRate          << std::endl;
+    outputFile << "residentialTax="     << this->residentialTax     << std::endl;
+    outputFile << "commercialTax="      << this->commercialTax      << std::endl;
+    outputFile << "industrialTax="      << this->industrialTax      << std::endl;
+    outputFile << "funds="              << this->funds              << std::endl;
+    outputFile << "earnings="           << this->earnings           << std::endl;
+    
+    outputFile.close();
+    
+    this->map.save(cityName + "_map.dat");
+    
+    return;
+}
+    
 void City::update(float dt)
 {
     double popTotal = 0;
@@ -202,7 +276,7 @@ void City::update(float dt)
         }
     }
 	/* Adjust population pool for births and deaths */
-    this->populationPool = this->adjustPopulation(this->populationPool, this->birthRate - this->deathRate);
+    this->populationPool += this->populationPool * (this->birthRate - this->deathRate);
     popTotal += this->populationPool;
 
     /* Adjust the employment pool for the changing population */
